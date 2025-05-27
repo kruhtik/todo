@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Todo List</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-section input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.input-section button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.task-counter {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.task-item input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.task-name {
+  flex: 1;
+  font-size: 16px;
+}
+
+.task-name.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.task-item button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 5px;
+  font-size: 16px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Todo List</h1>
+    <div class="input-section">
+      <input type="text" id="task-input" placeholder="Write your next task" />
+      <button id="add-button">Add</button>
+    </div>
+    <div class="task-counter">
+      <p id="task-count">0/0</p>
+    </div>
+    <div id="task-list"></div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('task-input');
+  const addButton = document.getElementById('add-button');
+  const taskList = document.getElementById('task-list');
+  const taskCount = document.getElementById('task-count');
+
+  let tasks = [];
+
+  function updateTaskCount() {
+    const completed = tasks.filter(task => task.completed).length;
+    taskCount.textContent = `${completed}/${tasks.length}`;
+  }
+
+  function renderTasks() {
+    taskList.innerHTML = '';
+    tasks.forEach((task, index) => {
+      const taskDiv = document.createElement('div');
+      taskDiv.classList.add('task-item');
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = task.completed;
+      checkbox.addEventListener('change', () => {
+        task.completed = checkbox.checked;
+        renderTasks();
+      });
+
+      const taskName = document.createElement('p');
+      taskName.textContent = task.name;
+      taskName.classList.add('task-name');
+      if (task.completed) {
+        taskName.classList.add('completed');
+      }
+
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        tasks.splice(index, 1);
+        renderTasks();
+      });
+
+      editButton.addEventListener('click', () => {
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.value = task.name;
+        inputField.classList.add('edit-input');
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+
+        // Replace taskName and editButton with inputField, saveButton, and cancelButton
+        taskDiv.replaceChild(inputField, taskName);
+        taskDiv.replaceChild(saveButton, editButton);
+        taskDiv.insertBefore(cancelButton, deleteButton);
+
+        inputField.focus();
+
+        const saveTask = () => {
+          const newName = inputField.value.trim();
+          if (newName) {
+            task.name = newName;
+            renderTasks();
+          }
+        };
+
+        const cancelEdit = () => {
+          renderTasks();
+        };
+
+        saveButton.addEventListener('click', saveTask);
+        cancelButton.addEventListener('click', cancelEdit);
+        inputField.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            saveTask();
+          } else if (e.key === 'Escape') {
+            cancelEdit();
+          }
+        });
+      });
+
+      taskDiv.appendChild(checkbox);
+      taskDiv.appendChild(taskName);
+      taskDiv.appendChild(editButton);
+      taskDiv.appendChild(deleteButton);
+
+      taskList.appendChild(taskDiv);
+    });
+    updateTaskCount();
+  }
+
+  addButton.addEventListener('click', () => {
+    const taskName = input.value.trim();
+    if (taskName) {
+      tasks.push({ name: taskName, completed: false });
+      input.value = '';
+      renderTasks();
+    }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      addButton.click();
+    }
+  });
+
+  renderTasks();
+});
+
+  </script>
+</body>
+</html>
