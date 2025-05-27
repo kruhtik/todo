@@ -224,3 +224,4 @@ function removeDuplicates(arr){
 }
 console.log(removeDuplicates(["a","b","c","d","a","e","f","b","g"]));
 //this is the second repo dfgfsg
+// modifed here

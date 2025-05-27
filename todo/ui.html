@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guardians Movie Posters</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #000000;
+    }
+    #poster-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .h{
+        color: white;
+    }
+    .poster {
+      width: 200px;
+      margin: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+    }
+    .poster img {
+      width: 100%;
+      height: auto;
+    }
+    .poster-title {
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="h">Guardians Movie Posters</h1>
+  <div id="poster-container"></div>
+  <script src="ui.js"></script>
+</body>
+</html>
