@@ -222,4 +222,5 @@ function removeDuplicates(arr){
     }
     return arr1;
 }
-console.log(removeDuplicates(["a","b","c","d","a","e","f","b"]));
+console.log(removeDuplicates(["a","b","c","d","a","e","f","b","g"]));
+//this is the second repo
